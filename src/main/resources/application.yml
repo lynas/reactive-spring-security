@@ -1,0 +1,9 @@
+spring:
+  r2dbc:
+    url: "r2dbc:pool:mysql://localhost:3306/demo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Dhaka"
+    username: demo
+    password: 123456
+
+#logging:
+#  level:
+#    root: debug
