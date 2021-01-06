@@ -4,6 +4,6 @@ spring:
     username: demo
     password: 123456
 
-#logging:
-#  level:
-#    root: debug
+logging:
+  level:
+    root: debug
