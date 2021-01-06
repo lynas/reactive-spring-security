@@ -28,31 +28,10 @@ fun main(args: Array<String>) {
 }
 
 
-@Component
-class AppReactiveUserDetailService(val appUserRepository: AppUserRepository) : ReactiveUserDetailsService {
-    override fun findByUsername(username: String): Mono<UserDetails> {
-        return appUserRepository.findAppUserByEmail(username)
-            .map { CustomUser(it) }
-    }
-
-    class CustomUser(appUser: AppUser) :
-        User(appUser.email, appUser.password, AuthorityUtils.createAuthorityList(appUser.roles)), UserDetails {
-        override fun isEnabled() = true
-
-        override fun isAccountNonExpired() = true
-
-        override fun isAccountNonLocked() = true
-
-        override fun isCredentialsNonExpired() = true
-    }
-}
-
 @Table
 open class AppUser(
     @Id
     val id: Long,
-//    val firstName: String,
-//    val lastName: String,
     val email: String,
     val password: String,
     val roles: String
@@ -83,6 +62,26 @@ class AppSecurityConfig{
 
 }
 
+@Component
+class AppReactiveUserDetailService(val appUserRepository: AppUserRepository) : ReactiveUserDetailsService {
+    override fun findByUsername(username: String): Mono<UserDetails> {
+        return appUserRepository.findAppUserByEmail(username)
+            .map { CustomUser(it) }
+    }
+
+    class CustomUser(appUser: AppUser) :
+        User(appUser.email, appUser.password, AuthorityUtils.createAuthorityList(appUser.roles)), UserDetails {
+        override fun isEnabled() = true
+
+        override fun isAccountNonExpired() = true
+
+        override fun isAccountNonLocked() = true
+
+        override fun isCredentialsNonExpired() = true
+    }
+}
+
+
 @RestController
 class DemoController{
 
@@ -91,7 +90,6 @@ class DemoController{
 
     @GetMapping("/public")
     suspend fun public() = "Public content"
-
 
 }
 
